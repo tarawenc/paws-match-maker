@@ -1,24 +1,54 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
+import { SiteHeader } from "@/components/aacl/site-header";
 
-// No head() here: the home route inherits title/description/og/twitter from
-// __root.tsx, and ships no og:image so serve-time hosting can inject the
-// project's social preview (explicit og:image or latest screenshot).
 export const Route = createFileRoute("/")({
+  head: () => ({
+    meta: [
+      { title: "AACL — Animal Anti-Cruelty League South Africa" },
+      {
+        name: "description",
+        content:
+          "Choose your AACL region to find local shelter events, adoptions and community walks near you.",
+      },
+      { property: "og:title", content: "AACL — Animal Anti-Cruelty League South Africa" },
+      {
+        property: "og:description",
+        content: "Choose your AACL region to find local shelter events and community walks.",
+      },
+    ],
+  }),
   component: Index,
 });
 
-// IMPORTANT: Replace this placeholder. See ./README.md for routing conventions.
 function Index() {
   return (
-    <div
-      className="flex min-h-screen items-center justify-center"
-      style={{ backgroundColor: "#fcfbf8" }}
-    >
-      <img
-        data-lovable-blank-page-placeholder="REMOVE_THIS"
-        src="https://cdn.gpteng.co/blank-app-v1.svg"
-        alt="Your app will live here!"
-      />
+    <div className="min-h-screen bg-white">
+      <SiteHeader />
+
+      <main className="mx-auto max-w-6xl px-6 py-10">
+        <section className="relative aspect-video w-full overflow-hidden rounded-lg bg-placeholder">
+          <div className="absolute inset-0 grid place-items-center px-6 text-center">
+            <div className="max-w-2xl">
+              <h1 className="text-4xl font-bold tracking-tight text-slate-body md:text-5xl">
+                Every animal deserves a champion
+              </h1>
+              <p className="mt-4 text-base text-slate-body md:text-lg">
+                Shelters, clinics and community events across South Africa. Pick your region to
+                see what&apos;s happening near you.
+              </p>
+            </div>
+          </div>
+        </section>
+
+        <div className="mt-10 flex justify-center">
+          <Link
+            to="/cape-town"
+            className="rounded-md bg-brand px-8 py-3.5 text-base font-semibold text-brand-foreground transition-opacity hover:opacity-90"
+          >
+            View Cape Town Events
+          </Link>
+        </div>
+      </main>
     </div>
   );
 }
