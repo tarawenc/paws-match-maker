@@ -15,6 +15,7 @@ import { Route as InboxRouteImport } from './routes/inbox'
 import { Route as MatchRouteImport } from './routes/match'
 import { Route as PendingRouteImport } from './routes/pending'
 import { Route as RegisterRouteImport } from './routes/register'
+import { Route as TicketRouteImport } from './routes/ticket'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -46,6 +47,11 @@ const RegisterRoute = RegisterRouteImport.update({
   path: '/register',
   getParentRoute: () => rootRouteImport,
 } as any)
+const TicketRoute = TicketRouteImport.update({
+  id: '/ticket',
+  path: '/ticket',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -54,6 +60,7 @@ export interface FileRoutesByFullPath {
   '/match': typeof MatchRoute
   '/pending': typeof PendingRoute
   '/register': typeof RegisterRoute
+  '/ticket': typeof TicketRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -62,6 +69,7 @@ export interface FileRoutesByTo {
   '/match': typeof MatchRoute
   '/pending': typeof PendingRoute
   '/register': typeof RegisterRoute
+  '/ticket': typeof TicketRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -71,12 +79,27 @@ export interface FileRoutesById {
   '/match': typeof MatchRoute
   '/pending': typeof PendingRoute
   '/register': typeof RegisterRoute
+  '/ticket': typeof TicketRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/cape-town' | '/inbox' | '/match' | '/pending' | '/register'
+  fullPaths:
+    | '/'
+    | '/cape-town'
+    | '/inbox'
+    | '/match'
+    | '/pending'
+    | '/register'
+    | '/ticket'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/cape-town' | '/inbox' | '/match' | '/pending' | '/register'
+  to:
+    | '/'
+    | '/cape-town'
+    | '/inbox'
+    | '/match'
+    | '/pending'
+    | '/register'
+    | '/ticket'
   id:
     | '__root__'
     | '/'
@@ -85,6 +108,7 @@ export interface FileRouteTypes {
     | '/match'
     | '/pending'
     | '/register'
+    | '/ticket'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -94,6 +118,7 @@ export interface RootRouteChildren {
   MatchRoute: typeof MatchRoute
   PendingRoute: typeof PendingRoute
   RegisterRoute: typeof RegisterRoute
+  TicketRoute: typeof TicketRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -140,6 +165,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof RegisterRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/ticket': {
+      id: '/ticket'
+      path: '/ticket'
+      fullPath: '/ticket'
+      preLoaderRoute: typeof TicketRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -150,7 +182,18 @@ const rootRouteChildren: RootRouteChildren = {
   MatchRoute: MatchRoute,
   PendingRoute: PendingRoute,
   RegisterRoute: RegisterRoute,
+  TicketRoute: TicketRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
+
+import type { getRouter } from './router.tsx'
+import type { startInstance } from './start.ts'
+declare module '@tanstack/react-start' {
+  interface Register {
+    ssr: true
+    router: Awaited<ReturnType<typeof getRouter>>
+    config: Awaited<ReturnType<typeof startInstance.getOptions>>
+  }
+}
