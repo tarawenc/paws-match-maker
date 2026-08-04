@@ -11,6 +11,7 @@ import { useEffect, type ReactNode } from "react";
 
 import appCss from "../styles.css?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
+import { FlowProvider } from "../lib/flow";
 
 function NotFoundComponent() {
   return (
@@ -77,11 +78,18 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "Lovable App" },
-      { name: "description", content: "Lovable Generated Project" },
-      { name: "author", content: "Lovable" },
-      { property: "og:title", content: "Lovable App" },
-      { property: "og:description", content: "Lovable Generated Project" },
+      { title: "AACL Cape Town — Paws in the Park" },
+      {
+        name: "description",
+        content:
+          "Register for AACL Cape Town's Paws in the Park 2026 and get matched with a shelter dog to walk with.",
+      },
+      { name: "author", content: "Animal Anti-Cruelty League" },
+      { property: "og:title", content: "AACL Cape Town — Paws in the Park" },
+      {
+        property: "og:description",
+        content: "Register and get matched with a shelter dog for Paws in the Park 2026.",
+      },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
       { name: "twitter:site", content: "@Lovable" },
@@ -120,7 +128,9 @@ function RootComponent() {
   return (
     <QueryClientProvider client={queryClient}>
       {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
-      <Outlet />
+      <FlowProvider>
+        <Outlet />
+      </FlowProvider>
     </QueryClientProvider>
   );
 }
