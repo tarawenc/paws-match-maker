@@ -28,7 +28,7 @@ function Match() {
   const navigate = useNavigate();
   const flow = useFlow();
   const [index, setIndex] = useState(0);
-  const dog = DOGS[index % DOGS.length];
+  const dog = DOGS[index % DOGS.length]!;
 
   function pass() {
     setIndex((i) => (i + 1) % DOGS.length);
