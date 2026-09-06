@@ -13,21 +13,27 @@ export function SiteHeader({ confirmed = false }: { confirmed?: boolean }) {
           </span>
         </Link>
 
-        <nav className="hidden flex-1 items-center gap-3 md:flex" aria-label="Main">
-          {["About", "Adopt", "Donate", "Events"].map((item) => (
+        <nav className="hidden flex-1 items-center gap-6 md:flex" aria-label="Main">
+          {["About", "Adopt", "Volunteer", "Events"].map((item) => (
             <span
               key={item}
-              className="rounded bg-placeholder px-4 py-1.5 text-xs font-medium text-slate-body"
+              className="cursor-default text-sm font-medium text-slate-body hover:text-brand"
             >
               {item}
             </span>
           ))}
         </nav>
 
-        <div className="ml-auto flex items-center gap-4">
+        <div className="ml-auto flex items-center gap-3">
           {confirmed ? (
             <span className="text-sm font-bold text-brand">Match Confirmed!</span>
           ) : null}
+          <button
+            type="button"
+            className="rounded-md bg-brand px-4 py-1.5 text-sm font-semibold text-brand-foreground transition-opacity hover:opacity-90"
+          >
+            Donate
+          </button>
           <button
             type="button"
             className="rounded-md border border-brand px-3 py-1.5 text-sm font-medium text-brand transition-colors hover:bg-mint"

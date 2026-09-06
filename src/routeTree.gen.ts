@@ -11,8 +11,10 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as CapeTownRouteImport } from './routes/cape-town'
+import { Route as EmailRouteImport } from './routes/email'
 import { Route as InboxRouteImport } from './routes/inbox'
 import { Route as MatchRouteImport } from './routes/match'
+import { Route as PaceRouteImport } from './routes/pace'
 import { Route as PendingRouteImport } from './routes/pending'
 import { Route as RegisterRouteImport } from './routes/register'
 import { Route as TicketRouteImport } from './routes/ticket'
@@ -27,6 +29,11 @@ const CapeTownRoute = CapeTownRouteImport.update({
   path: '/cape-town',
   getParentRoute: () => rootRouteImport,
 } as any)
+const EmailRoute = EmailRouteImport.update({
+  id: '/email',
+  path: '/email',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const InboxRoute = InboxRouteImport.update({
   id: '/inbox',
   path: '/inbox',
@@ -35,6 +42,11 @@ const InboxRoute = InboxRouteImport.update({
 const MatchRoute = MatchRouteImport.update({
   id: '/match',
   path: '/match',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PaceRoute = PaceRouteImport.update({
+  id: '/pace',
+  path: '/pace',
   getParentRoute: () => rootRouteImport,
 } as any)
 const PendingRoute = PendingRouteImport.update({
@@ -56,8 +68,10 @@ const TicketRoute = TicketRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/cape-town': typeof CapeTownRoute
+  '/email': typeof EmailRoute
   '/inbox': typeof InboxRoute
   '/match': typeof MatchRoute
+  '/pace': typeof PaceRoute
   '/pending': typeof PendingRoute
   '/register': typeof RegisterRoute
   '/ticket': typeof TicketRoute
@@ -65,8 +79,10 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/cape-town': typeof CapeTownRoute
+  '/email': typeof EmailRoute
   '/inbox': typeof InboxRoute
   '/match': typeof MatchRoute
+  '/pace': typeof PaceRoute
   '/pending': typeof PendingRoute
   '/register': typeof RegisterRoute
   '/ticket': typeof TicketRoute
@@ -75,8 +91,10 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/cape-town': typeof CapeTownRoute
+  '/email': typeof EmailRoute
   '/inbox': typeof InboxRoute
   '/match': typeof MatchRoute
+  '/pace': typeof PaceRoute
   '/pending': typeof PendingRoute
   '/register': typeof RegisterRoute
   '/ticket': typeof TicketRoute
@@ -86,8 +104,10 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/cape-town'
+    | '/email'
     | '/inbox'
     | '/match'
+    | '/pace'
     | '/pending'
     | '/register'
     | '/ticket'
@@ -95,8 +115,10 @@ export interface FileRouteTypes {
   to:
     | '/'
     | '/cape-town'
+    | '/email'
     | '/inbox'
     | '/match'
+    | '/pace'
     | '/pending'
     | '/register'
     | '/ticket'
@@ -104,8 +126,10 @@ export interface FileRouteTypes {
     | '__root__'
     | '/'
     | '/cape-town'
+    | '/email'
     | '/inbox'
     | '/match'
+    | '/pace'
     | '/pending'
     | '/register'
     | '/ticket'
@@ -114,8 +138,10 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   CapeTownRoute: typeof CapeTownRoute
+  EmailRoute: typeof EmailRoute
   InboxRoute: typeof InboxRoute
   MatchRoute: typeof MatchRoute
+  PaceRoute: typeof PaceRoute
   PendingRoute: typeof PendingRoute
   RegisterRoute: typeof RegisterRoute
   TicketRoute: typeof TicketRoute
@@ -137,6 +163,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof CapeTownRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/email': {
+      id: '/email'
+      path: '/email'
+      fullPath: '/email'
+      preLoaderRoute: typeof EmailRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/inbox': {
       id: '/inbox'
       path: '/inbox'
@@ -149,6 +182,13 @@ declare module '@tanstack/react-router' {
       path: '/match'
       fullPath: '/match'
       preLoaderRoute: typeof MatchRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/pace': {
+      id: '/pace'
+      path: '/pace'
+      fullPath: '/pace'
+      preLoaderRoute: typeof PaceRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/pending': {
@@ -178,8 +218,10 @@ declare module '@tanstack/react-router' {
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   CapeTownRoute: CapeTownRoute,
+  EmailRoute: EmailRoute,
   InboxRoute: InboxRoute,
   MatchRoute: MatchRoute,
+  PaceRoute: PaceRoute,
   PendingRoute: PendingRoute,
   RegisterRoute: RegisterRoute,
   TicketRoute: TicketRoute,
@@ -187,3 +229,13 @@ const rootRouteChildren: RootRouteChildren = {
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
+
+import type { getRouter } from './router.tsx'
+import type { startInstance } from './start.ts'
+declare module '@tanstack/react-start' {
+  interface Register {
+    ssr: true
+    router: Awaited<ReturnType<typeof getRouter>>
+    config: Awaited<ReturnType<typeof startInstance.getOptions>>
+  }
+}
