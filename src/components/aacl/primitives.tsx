@@ -29,7 +29,7 @@ export function TraitChip({ children }: { children: React.ReactNode }) {
   );
 }
 
-export function StepIndicator({ current, total = 4 }: { current: number; total?: number }) {
+export function StepIndicator({ current, total = 3 }: { current: number; total?: number }) {
   return (
     <div className="flex items-center justify-center gap-2" aria-label={`Step ${current} of ${total}`}>
       {Array.from({ length: total }).map((_, i) => (

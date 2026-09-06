@@ -11,6 +11,7 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as CapeTownRouteImport } from './routes/cape-town'
+import { Route as EmailRouteImport } from './routes/email'
 import { Route as InboxRouteImport } from './routes/inbox'
 import { Route as MatchRouteImport } from './routes/match'
 import { Route as PaceRouteImport } from './routes/pace'
@@ -26,6 +27,11 @@ const IndexRoute = IndexRouteImport.update({
 const CapeTownRoute = CapeTownRouteImport.update({
   id: '/cape-town',
   path: '/cape-town',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const EmailRoute = EmailRouteImport.update({
+  id: '/email',
+  path: '/email',
   getParentRoute: () => rootRouteImport,
 } as any)
 const InboxRoute = InboxRouteImport.update({
@@ -62,6 +68,7 @@ const TicketRoute = TicketRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/cape-town': typeof CapeTownRoute
+  '/email': typeof EmailRoute
   '/inbox': typeof InboxRoute
   '/match': typeof MatchRoute
   '/pace': typeof PaceRoute
@@ -72,6 +79,7 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/cape-town': typeof CapeTownRoute
+  '/email': typeof EmailRoute
   '/inbox': typeof InboxRoute
   '/match': typeof MatchRoute
   '/pace': typeof PaceRoute
@@ -83,6 +91,7 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/cape-town': typeof CapeTownRoute
+  '/email': typeof EmailRoute
   '/inbox': typeof InboxRoute
   '/match': typeof MatchRoute
   '/pace': typeof PaceRoute
@@ -95,6 +104,7 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/cape-town'
+    | '/email'
     | '/inbox'
     | '/match'
     | '/pace'
@@ -105,6 +115,7 @@ export interface FileRouteTypes {
   to:
     | '/'
     | '/cape-town'
+    | '/email'
     | '/inbox'
     | '/match'
     | '/pace'
@@ -115,6 +126,7 @@ export interface FileRouteTypes {
     | '__root__'
     | '/'
     | '/cape-town'
+    | '/email'
     | '/inbox'
     | '/match'
     | '/pace'
@@ -126,6 +138,7 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   CapeTownRoute: typeof CapeTownRoute
+  EmailRoute: typeof EmailRoute
   InboxRoute: typeof InboxRoute
   MatchRoute: typeof MatchRoute
   PaceRoute: typeof PaceRoute
@@ -148,6 +161,13 @@ declare module '@tanstack/react-router' {
       path: '/cape-town'
       fullPath: '/cape-town'
       preLoaderRoute: typeof CapeTownRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/email': {
+      id: '/email'
+      path: '/email'
+      fullPath: '/email'
+      preLoaderRoute: typeof EmailRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/inbox': {
@@ -198,6 +218,7 @@ declare module '@tanstack/react-router' {
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   CapeTownRoute: CapeTownRoute,
+  EmailRoute: EmailRoute,
   InboxRoute: InboxRoute,
   MatchRoute: MatchRoute,
   PaceRoute: PaceRoute,

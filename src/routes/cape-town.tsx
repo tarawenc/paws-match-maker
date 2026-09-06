@@ -23,18 +23,18 @@ export const Route = createFileRoute("/cape-town")({
   component: CapeTown,
 });
 
-const FACILITIES = ["All Cape Town", "Epping Shelter", "Bellville Clinic"] as const;
+const FACILITIES = ["All CPT", "Bellville", "Epping"] as const;
 
 const SECONDARY = [
-  { title: "Kitten Foster Open Day", facility: "Epping Shelter", date: "12 Oct 2026" },
-  { title: "Free Sterilisation Drive", facility: "Bellville Clinic", date: "26 Oct 2026" },
-  { title: "Volunteer Induction Morning", facility: "Epping Shelter", date: "09 Nov 2026" },
+  { title: "Kitten Foster Open Day", facility: "Epping", date: "12 Oct 2026" },
+  { title: "Free Sterilisation Drive", facility: "Bellville", date: "26 Oct 2026" },
+  { title: "Volunteer Induction Morning", facility: "Epping", date: "09 Nov 2026" },
 ];
 
 function CapeTown() {
-  const [active, setActive] = useState<(typeof FACILITIES)[number]>("All Cape Town");
+  const [active, setActive] = useState<(typeof FACILITIES)[number]>("All CPT");
   const visible =
-    active === "All Cape Town" ? SECONDARY : SECONDARY.filter((e) => e.facility === active);
+    active === "All CPT" ? SECONDARY : SECONDARY.filter((e) => e.facility === active);
 
   return (
     <div className="min-h-screen bg-page">
@@ -76,7 +76,7 @@ function CapeTown() {
                 to="/register"
                 className="inline-flex rounded-md bg-brand px-6 py-3 text-sm font-semibold text-brand-foreground transition-opacity hover:opacity-90"
               >
-                Register &amp; Match with a Dog
+                Register
               </Link>
             </div>
           </div>
