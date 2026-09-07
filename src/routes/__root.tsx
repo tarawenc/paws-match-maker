@@ -15,7 +15,7 @@ import { FlowProvider } from "../lib/flow";
 
 function NotFoundComponent() {
   return (
-    <div className="flex min-h-screen items-center justify-center bg-background px-4">
+    <div className="flex min-h-screen items-center justify-center px-4">
       <div className="max-w-md text-center">
         <h1 className="text-7xl font-bold text-foreground">404</h1>
         <h2 className="mt-4 text-xl font-semibold text-foreground">Page not found</h2>
@@ -43,7 +43,7 @@ function ErrorComponent({ error, reset }: { error: Error; reset: () => void }) {
   }, [error]);
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-background px-4">
+    <div className="flex min-h-screen items-center justify-center px-4">
       <div className="max-w-md text-center">
         <h1 className="text-xl font-semibold tracking-tight text-foreground">
           This page didn't load
@@ -99,7 +99,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
         rel: "stylesheet",
         href: appCss,
       },
-      { rel: "icon", href: "/favicon.ico", type: "image/x-icon" },
+      { rel: "icon", href: "/favicon.png?v=5", type: "image/png" },
     ],
   }),
   shellComponent: RootShell,
@@ -110,11 +110,26 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
 
 function RootShell({ children }: { children: ReactNode }) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <head>
+        <meta charSet="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <link rel="icon" type="image/png" href="/favicon.png?v=5" />
         <HeadContent />
       </head>
-      <body>
+      <body
+        suppressHydrationWarning
+        className="relative min-h-screen bg-page text-slate-body antialiased"
+      >
+        {/* Fixed background layer pinned at the lowest z-index */}
+        <div
+          aria-hidden="true"
+          className="pointer-events-none fixed inset-0 -z-10 bg-repeat opacity-[0.05]"
+          style={{
+            backgroundImage: "url('/paw-pattern.png')",
+            backgroundSize: "1100px 1100px",
+          }}
+        />
         {children}
         <Scripts />
       </body>
@@ -127,9 +142,10 @@ function RootComponent() {
 
   return (
     <QueryClientProvider client={queryClient}>
-      {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
       <FlowProvider>
-        <Outlet />
+        <div className="relative min-h-screen flex flex-col">
+          <Outlet />
+        </div>
       </FlowProvider>
     </QueryClientProvider>
   );

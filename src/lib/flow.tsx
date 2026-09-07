@@ -5,7 +5,11 @@ export type Dog = {
   name: string;
   age: string;
   breed: string;
-  traits: string[];
+  traits?: string[];
+  image?: string;
+  objectPosition?: string;
+  tags?: string[];
+  bio?: string;
 };
 
 export const DOGS: Dog[] = [
@@ -39,46 +43,67 @@ export const DOGS: Dog[] = [
   },
 ];
 
-export type Pace = "Walking" | "Jogger" | "Neither";
+export type Pace = "Walking" | "Jogger" | "Neither" | "walking" | "jogger" | "neither" | string;
 
-type FlowState = {
+export interface FlowState {
   name: string;
+  fullName?: string;
   email: string;
   phone: string;
+  cellphone?: string;
   pace: Pace;
   shortlist: Dog[];
-};
+  selectedDog?: Dog | null;
+  [key: string]: any;
+}
 
-type FlowContextValue = FlowState & {
+export interface FlowContextValue extends FlowState {
+  flowData: FlowState;
+  fullName?: string;
+  cellphone?: string;
   update: (patch: Partial<FlowState>) => void;
+  updateFlowData: (patch: Partial<FlowState>) => void;
+  setFlow: React.Dispatch<React.SetStateAction<FlowState>>;
   shortlistDog: (dog: Dog) => void;
-};
+}
 
 const defaultState: FlowState = {
   name: "",
+  fullName: "",
   email: "",
   phone: "",
+  cellphone: "",
   pace: "Walking",
   shortlist: [],
+  selectedDog: null,
 };
 
 const FlowContext = createContext<FlowContextValue | null>(null);
 
 export function FlowProvider({ children }: { children: ReactNode }) {
   const [state, setState] = useState<FlowState>(defaultState);
-  const value = useMemo(
-    () => ({
+
+  const value = useMemo<FlowContextValue>(() => {
+    const update = (patch: Partial<FlowState>) =>
+      setState((prev) => ({ ...prev, ...patch }));
+
+    return {
       ...state,
-      update: (patch: Partial<FlowState>) => setState((prev) => ({ ...prev, ...patch })),
+      fullName: state.fullName || state.name,
+      cellphone: state.cellphone || state.phone,
+      flowData: state,
+      update,
+      updateFlowData: update,
+      setFlow: setState,
       shortlistDog: (dog: Dog) =>
         setState((prev) =>
           prev.shortlist.some((d) => d.id === dog.id)
             ? prev
             : { ...prev, shortlist: [...prev.shortlist, dog] },
         ),
-    }),
-    [state],
-  );
+    };
+  }, [state]);
+
   return <FlowContext.Provider value={value}>{children}</FlowContext.Provider>;
 }
 
