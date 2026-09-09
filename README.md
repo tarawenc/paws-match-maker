@@ -1,5 +1,7 @@
 # Paws in the Park Flow
 
+This has been made for a brief UXT2305, it has been made for educational purposes and is in no way affiliated with AACL.
+
 Desktop Wireframes: Screen-by-Screen UI Breakdown
 
 This document provides a detailed description of the layout, content, and color usage for the 7-step desktop user flow for the AACL "Paws in the Park" registration process.
